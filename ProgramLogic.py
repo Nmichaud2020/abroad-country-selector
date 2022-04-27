@@ -70,18 +70,27 @@ def delete_countries():
     for item in c_list:
         country_index = world.index[world.name == item].tolist()
         for number in range(len(country_index)):
-            world = world.drop(country_index[number])
+            try:
+                world = world.drop(country_index[number])
+            except:
+                st.markdown(f"<h2 style='text-align: center; color: red;'>Invalid Input </h2>",
+                            unsafe_allow_html=True)
     fig, ax = plt.subplots(1, 1)
     st.set_option('deprecation.showPyplotGlobalUse', False)
     world_graph = world.plot(color='blue', edgecolor='black')
     world.plot()
-    st.pyplot(fig=None)
-    results = []
-    for item in geo_country_list:
-        if item not in c_list:
-            results.append(item)
-    result_text = ", ".join(results)
-    st.markdown(f"<h2 style='text-align: center; color: black;'>You should study abroad in {result_text}! </h2>", unsafe_allow_html=True)
+    try:
+        st.pyplot(fig=None)
+        results = []
+        for item in geo_country_list:
+            if item not in c_list:
+                results.append(item)
+        result_text = ", ".join(results)
+        st.markdown(f"<h2 style='text-align: center; color: black;'>You should study abroad in {result_text}! </h2>",
+                    unsafe_allow_html=True)
+    except:
+        st.markdown(f"<h2 style='text-align: center; color: red;'>Invalid Input </h2>",
+                    unsafe_allow_html=True)
 
 #Main function
 def main():
