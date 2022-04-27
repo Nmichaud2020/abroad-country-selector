@@ -1,15 +1,25 @@
-# from restcountries import RestCountryApiV2 as rapi
-import streamlit as st
+"""
+Study Abroad Country Selector
+Program which allows criteria to be selected in order to determine a country to study abroad in with display on a map
+
+Nicholas Michaud, Cailey Sapienza, Charlie Coxon
+
+April 27, 2022
+"""
 import geopandas
 import matplotlib.pyplot as plt
 from restcountries import RestCountryApiV2 as rapi
+import streamlit as st
 
+#Main Streamlit Title
 st.markdown(f"<h2 style='text-align: center; color: black;'>Welcome to study abroad location finder! </h2>",
             unsafe_allow_html=True)
 
+#World country data and map coordinates
 global world
 world = geopandas.read_file(geopandas.datasets.get_path('naturalearth_lowres'))
 
+#Main list used to delete non-criteria countries
 global c_list
 c_list = []
 
@@ -20,7 +30,6 @@ for name in geo_world.name:
     geo_country_list.append(name)
     geo_country_list.sort()
 
-
 # sidebar
 def user_information():
     st.sidebar.header("User Information")
@@ -28,7 +37,7 @@ def user_information():
     country = st.sidebar.selectbox(label= "What country are you from?", options= geo_country_list)
     c_list.append(country)
 
-
+#Determine the region person would like to study abroad in
 def near_or_far():
     st.sidebar.write("What region would you like?")
     region = st.sidebar.selectbox(label= "Regions", options= ("Africa", "Americas", "Asia", "Antarctic", "Antarctic Ocean", "Europe", "Oceania"))
@@ -41,6 +50,7 @@ def near_or_far():
         if item not in country_region_list and c_list:
             c_list.append(item)
 
+#Determine the language a person would like to learn while studying abroad
 language_list = {"English" : "en", "Mandarin" : "zh", "Hindi" : "hi", "Spanish" : "es", "French" : "fr", "Arabic" : "ar", "Italian" : "it", "Russian" : "ru", "Portuguese" : "pt", "German" : "de"}
 def get_language_country():
     st.sidebar.write("What language do you want to learn?")
@@ -54,6 +64,7 @@ def get_language_country():
         if item not in l_country_list and c_list:
             c_list.append(item)
 
+#Deletes countries from the map and range of acceptable companies
 def delete_countries():
     global world
     for item in c_list:
@@ -72,7 +83,7 @@ def delete_countries():
     result_text = ", ".join(results)
     st.markdown(f"<h2 style='text-align: center; color: black;'>You should study abroad in {result_text}! </h2>", unsafe_allow_html=True)
 
-
+#Main function
 def main():
     user_information()
     near_or_far()
