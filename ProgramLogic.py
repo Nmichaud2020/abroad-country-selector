@@ -40,7 +40,7 @@ def user_information():
 #Determine the region person would like to study abroad in
 def near_or_far():
     st.sidebar.write("What region would you like?")
-    region = st.sidebar.selectbox(label= "Regions", options= ("Africa", "Americas", "Asia", "Antarctic", "Antarctic Ocean", "Europe", "Oceania"))
+    region = st.sidebar.selectbox(label= "Regions", options= ("Africa", "Americas", "Asia", "Antarctic", "Antarctic Ocean", "Europe", "Oceania"), index= 1)
     country_region = rapi.get_countries_by_region(region= region)
     country_region_list = []
     for item in range(len(country_region)):
